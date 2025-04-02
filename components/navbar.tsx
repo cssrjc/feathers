@@ -1,6 +1,6 @@
 'use client'
 import { useRive } from '@rive-app/react-canvas';
-import { Gift, Info } from 'lucide-react';
+import { Gift, Info, Crown} from 'lucide-react';
 import { Button } from './ui/button';
 import Link from 'next/link';
 
@@ -17,10 +17,15 @@ export function Navbar() {
       icon: <Gift size={20}/>
     },
     {
-      name: 'what is Feathers?',
+      name: 'what is feathers?',
       link: '/about',
       icon: <Info size={20}/>
-    }
+    },
+    {
+      name: 'leaderboard',
+      link: '/leaderboard',
+      icon: <Crown size={20}/>
+    },
   ];
 
   return (
@@ -40,11 +45,20 @@ export function Navbar() {
             key={index} 
             href={item.link} 
           >
-            <Button className="flex flex-row items-center gap-3 text-md">
+            <Button
+              className="flex flex-row items-center gap-3 text-lg"
+            >
               {item.icon} {item.name}
             </Button>
           </Link>
         ))}
+        <Link href="">
+          <Button
+            className='border-2 border-white'
+          >
+            Redeem Here!
+          </Button>
+        </Link>
       </div>
     </div>
   );
