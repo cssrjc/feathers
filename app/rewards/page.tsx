@@ -4,6 +4,7 @@ import db from '@/utils/firebase'
 import { collection, getDocs, writeBatch, doc } from 'firebase/firestore'
 
 interface RewardItem {
+  id?: number
   name: string
   price: number
   imageUrl: string
@@ -17,7 +18,7 @@ interface DisplayItem {
 }
 
 const itemsToDisplay: DisplayItem[] = [
-  { id: 1, name: "House socks", price: 60, imageUrl: "/sockss.jpg" },
+  { id: 1, name: "House socks", price: 60, imageUrl: "/socks.jpg"},
   { id: 2, name: "Griffles Plushie", price: 130, imageUrl: "/background.jpg" },
   { id: 3, name: "Griffles Plushie House Keychain", price: 70, imageUrl: "/background.jpg" },
   { id: 4, name: "Track & Field Singlet", price: 60, imageUrl: "/background.jpg" },
@@ -65,7 +66,7 @@ const itemsToStore: RewardItem[] = [
     { id: 16, name: "Shoebag (Mangata)", price: 30, imageUrl: "/background.jpg" },
     { id: 17, name: "Shoebag (Wonderland)", price: 40, imageUrl: "/background.jpg" },
     { id: 18, name: "Shoebag (Wayfarers)", price: 40, imageUrl: "/background.jpg" },
-    { ame: "Totebag (Open House'23)", price: 80, imageUrl: "/background.jpg" },
+    { name: "Totebag (Open House'23)", price: 80, imageUrl: "/background.jpg" },
     { name: "Box Files ALL", price: 40, imageUrl: "/background.jpg" },
     { name: "Team Raffles Metal Water Bottle", price: 40, imageUrl: "/background.jpg" },
     { name: "Towel (Mangata)", price: 20, imageUrl: "/background.jpg" },

@@ -17,7 +17,8 @@ export function SearchBox() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const handleSearch = async (): Promise<void> => {
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
     try {
       setLoading(true)
       setFeathers(null)
@@ -43,23 +44,24 @@ export function SearchBox() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-3xl mx-auto">
-      {loading && (
-        <div className="text-lg">Loading...</div>
-      )}
-      {feathers !== null && !loading && (
-        <div className="flex flex-col gap-2 items-center text-9xl mb-10">
-          {feathers}
-          <p className="text-xl!">feathers earned!</p>
-          <Confetti recycle={false} numberOfPieces={400}/>
-        </div>
-      )}
-      {error && !loading && (
-        <div className="text-red-500">
-          {error}
-        </div>
-      )}
-      
+    <div className="flex flex-col items-center justify-center gap-4 w-full max-w-3xl mx-auto">
+      <div>
+        {loading && (
+          <div className="text-lg">Loading...</div>
+        )}
+        {feathers !== null && !loading && (
+          <div className="flex flex-col gap-2 items-center text-9xl mb-10">
+            {feathers}
+            <p className="text-xl!">feathers earned!</p>
+            <Confetti recycle={false} numberOfPieces={400}/>
+          </div>
+        )}
+        {error && !loading && (
+          <div className="text-red-500">
+            {error}
+          </div>
+        )}
+      </div>
       <div className="w-full">
         <form onSubmit={handleSearch} className="w-full px-10">
           <input

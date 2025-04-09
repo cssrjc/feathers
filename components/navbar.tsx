@@ -12,34 +12,29 @@ export function Navbar() {
 
   const Items = [
     {
-      name: 'rewards',
+      name: 'Rewards',
       link: '/rewards',
       icon: <Gift size={20}/>
     },
     {
-      name: 'what is feathers?',
+      name: 'Events',
       link: '/about',
       icon: <Info size={20}/>
-    },
-    {
-      name: 'leaderboard',
-      link: '/leaderboard',
-      icon: <Crown size={20}/>
     },
   ];
 
   return (
-    <div className="flex flex-row items-center justify-between w-full p-5">
+    <div className="flex flex-row md:items-center justify-between w-full p-5">
       <div className="flex flex-row gap-4 items-center">
         <Link 
           href="/" 
-          className="font-sans text-7xl tracking-tight"
+          className="font-sans text-4xl md:text-7xl tracking-tight"
         >
           Feathers
         </Link>
-        <RiveComponent className="w-20 h-20"/>
+        <RiveComponent className="w-10 h-10 md:w-20 md:h-20"/>
       </div>
-      <div className="flex flex-row mr-2">
+      <div className="flex flex-row items-center mr-2">
         {Items.map((item, index) => (
           <Link 
             key={index} 
@@ -48,17 +43,18 @@ export function Navbar() {
             <Button
               className="flex flex-row items-center gap-3 text-lg"
             >
-              {item.icon} {item.name}
+              {item.icon}
+              <span className='hidden md:block'>{item.name}</span>
             </Button>
           </Link>
         ))}
-        <Link href="">
-          <Button
-            className='border-2 border-white'
-          >
-            Redeem Here!
+
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScvU2_3s3QGY_9ZC6ajCIMXGoAgEj1ZUu80n5oWtxZtAQ6Bbw/viewform">
+          <Button variant="outline" className='ml-4 md:ml-0 py-2'>
+            Redeem
           </Button>
-        </Link>
+        </a>
       </div>
     </div>
   );

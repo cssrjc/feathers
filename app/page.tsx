@@ -11,7 +11,7 @@ export default function Home() {
           height={400}
           width={800}
           alt="background"
-          style={{ width: '100%', height: 'auto' }}
+          className="object-cover w-full h-full"
         />
       </div>
       <div className="fixed inset-0 bg-black opacity-75 z-[-1]"></div>
@@ -19,3 +19,4 @@ export default function Home() {
     </div>
   )
 };
+
