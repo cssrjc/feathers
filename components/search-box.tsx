@@ -1,10 +1,11 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { Send } from "lucide-react"
 import { collection, getDocs, query, where, QuerySnapshot } from 'firebase/firestore'
 import db from '@/utils/firebase'
 import Confetti from 'react-confetti'
+import { AnimatedNumber } from '@/components/motion-primitives/animated-number';
 
 interface User {
   studentID: string
@@ -16,6 +17,7 @@ export function SearchBox() {
   const [feathers, setFeathers] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [value, setValue] = useState<number>(0)
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -43,6 +45,8 @@ export function SearchBox() {
     }
   };
 
+  useEffect(() => {setValue(feathers ?? 0)}, [feathers])
+
   return (
     <div className="flex flex-col items-center justify-center gap-4 w-full max-w-3xl mx-auto">
       <div>
@@ -51,7 +55,13 @@ export function SearchBox() {
         )}
         {feathers !== null && !loading && (
           <div className="flex flex-col gap-2 items-center text-9xl mb-10">
-            {feathers}
+            <AnimatedNumber   
+              value={value}
+              springOptions={{
+                bounce: 0,
+                duration: 5000,
+              }}
+            />
             <p className="text-xl!">feathers earned!</p>
             <Confetti recycle={false} numberOfPieces={400}/>
           </div>

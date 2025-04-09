@@ -18,7 +18,7 @@ interface DisplayItem {
 }
 
 const itemsToDisplay: DisplayItem[] = [
-  { id: 1, name: "House socks", price: 60, imageUrl: "/socks.jpg"},
+  { id: 1, name: "House socks", price: 60, imageUrl: "/background.jpg"},
   { id: 2, name: "Griffles Plushie", price: 130, imageUrl: "/background.jpg" },
   { id: 3, name: "Griffles Plushie House Keychain", price: 70, imageUrl: "/background.jpg" },
   { id: 4, name: "Track & Field Singlet", price: 60, imageUrl: "/background.jpg" },
