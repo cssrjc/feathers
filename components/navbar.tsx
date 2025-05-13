@@ -52,18 +52,6 @@ export function Navbar() {
             </Link>
           ))}
 
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLScvU2_3s3QGY_9ZC6ajCIMXGoAgEj1ZUu80n5oWtxZtAQ6Bbw/viewform"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button
-              variant="outline"
-              className="h-auto px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-sm sm:text-base md:text-lg"
-            >
-              Redeem
-            </Button>
-          </a>
         </div>
       </div>
     </nav>
