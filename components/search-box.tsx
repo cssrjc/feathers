@@ -48,7 +48,7 @@ export function SearchBox() {
   useEffect(() => {setValue(feathers ?? 0)}, [feathers])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 w-full max-w-3xl mx-auto">
+    <div className="flex flex-col mt-120 items-center justify-center gap-4 w-full max-w-3xl mx-auto">
       <div>
         {loading && (
           <div className="text-lg">Loading...</div>
