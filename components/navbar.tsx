@@ -1,5 +1,4 @@
 'use client';
-
 import { useRive } from '@rive-app/react-canvas';
 import { Gift, CalendarHeart } from 'lucide-react';
 import { Button } from './ui/button';
@@ -25,7 +24,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-lg shadow-md border-b border-white/20">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-xl shadow-md border-b border-white/20">
       <div className="w-full px-4 sm:px-6 lg:px-10 py-4 sm:py-5 md:py-6 flex items-center justify-between">
         
         {/* Logo and Title */}

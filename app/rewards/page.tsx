@@ -1,123 +1,108 @@
 'use client';
-
 import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
 import db from '@/utils/firebase';
-import { collection, getDocs, writeBatch, doc } from 'firebase/firestore';
 import Image from 'next/image';
 
 interface RewardItem {
-  id?: number;
+  id: string;
+  link: string;
   name: string;
   price: number;
-  imageUrl: string;
+  stock: boolean;
 }
 
-const itemsToDisplay: RewardItem[] = [
-  { id: 1, name: "Sticky Notes (Five Houses)", price: 10, imageUrl: "/stickynotes.jpg"},
-  { id: 2, name: "Folders (Open House)", price: 20, imageUrl: "/background.jpg" },
-  { id: 3, name: "Pencil Case (Wonderland)", price: 20, imageUrl: "/background.jpg" },
-  { id: 4, name: "Collapsible Silicone Cup", price: 30, imageUrl: "/background.jpg" },
-  { id: 5, name: "Notebook (Mangata)", price: 30, imageUrl: "/background.jpg" },
-  { id: 6, name: "Notebook (Open House)", price: 30, imageUrl: "/background.jpg" },
-  { id: 7, name: "Shoebag (Mangata)", price: 30, imageUrl: "/background.jpg" },
-  { id: 8, name: "Shoebag (Wonderland)", price: 30, imageUrl: "/background.jpg" },
-  { id: 9, name: "Iron-on Badge (assorted)", price: 35, imageUrl: "/background.jpg" },
-  { id: 10, name: "Box File (Polaris)", price: 40, imageUrl: "/background.jpg" },
-  { id: 11, name: "Box File (Wanderlust)", price: 40, imageUrl: "/background.jpg" },
-  { id: 12, name: "House Socks (assorted)", price: 60, imageUrl: "/background.jpg" },
-  { id: 13, name: "Black BW Socks", price: 60, imageUrl: "/background.jpg" },
-  { id: 14, name: "Sports Singlet (Black))", price: 60, imageUrl: "/background.jpg" },
-  { id: 15, name: "Sports Singlet (Green)", price: 60, imageUrl: "/background.jpg" },
-  { id: 16, name: "Griffles Keychain (BB)", price: 70, imageUrl: "/background.jpg" },
-  { id: 17, name: "Griffles Keychain (BW)", price: 40, imageUrl: "/background.jpg" },
-  { id: 18, name: "Griffles Keychain (HH)", price: 40, imageUrl: "/background.jpg" },
-  { id: 19, name: "Griffles Keychain (MR)", price: 80, imageUrl: "/background.jpg" },
-  { id: 20, name: "Griffles Keychain (MT)", price: 40, imageUrl: "/background.jpg" },
-  { id: 21, name: "Team Raffles Water Bottle", price: 40, imageUrl: "/background.jpg" },
-  { id: 22, name: "Towel (Mangata)", price: 20, imageUrl: "/background.jpg" },
-  { id: 23, name: "Collapsible Cups Raffles", price: 30, imageUrl: "/background.jpg" },
-  { id: 24, name: "Wristband (Morrison-Richardson)", price: 30, imageUrl: "/background.jpg" },
-  { id: 25, name: "Totebag (Buckle-Buckley)", price: 80, imageUrl: "/background.jpg" },
-  { id: 26, name: "Tattoo (Wonderland)", price: 10, imageUrl: "/background.jpg" },
-  { id: 27, name: "Keychain Open House 2022", price: 10, imageUrl: "/background.jpg" },
-];
-
 export default function RewardsPage() {
+  const [rewards, setRewards] = useState<RewardItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage: number = 9;
-  const totalPages: number = Math.ceil(itemsToDisplay.length / itemsPerPage);
+  const itemsPerPage: number = 15;
 
-  const paginatedItems = itemsToDisplay.slice(
+  // Fetch rewards from Firestore
+  const fetchRewards = async () => {
+    try {
+      const rewardsRef = collection(db, 'rewards');
+      const snapshot = await getDocs(rewardsRef);
+      const rewardsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as RewardItem[];
+      setRewards(rewardsData);
+    } catch (error) {
+      console.error('Error fetching rewards:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRewards();
+  }, []);
+
+  // Filter rewards based on search query
+  const filteredRewards = rewards.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredRewards.length / itemsPerPage);
+  const paginatedItems = filteredRewards.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage)
+    setCurrentPage(newPage);
     setTimeout(() => {
-      const contentTop = document.getElementById("events-header")
+      const contentTop = document.getElementById('rewards-header');
       if (contentTop) {
-        contentTop.scrollIntoView({ behavior: "smooth" })
+        contentTop.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100)
+    }, 100);
   };
-
-  const populateRewards = async () => {
-    try {
-      const rewardsRef = collection(db, 'rewards');
-      const snapshot = await getDocs(rewardsRef);
-
-      if (snapshot.empty) {
-        const batch = writeBatch(db);
-
-        itemsToDisplay.forEach((item) => {
-          const docRef = doc(rewardsRef, item.name);
-          batch.set(docRef, {
-            name: item.name,
-            price: item.price,
-            imageUrl: item.imageUrl,
-          });
-        });
-
-        await batch.commit();
-        console.log('All rewards have been added successfully!');
-      } else {
-        console.log('Rewards collection already populated');
-      }
-    } catch (error) {
-      console.error('Error adding rewards:', error);
-    }
-  };
-
-  useEffect(() => {
-    populateRewards();
-  }, []);
 
   return (
     <div className="relative bg-gradient-to-r from-green-800 via-black to-green-600 min-h-screen">
       <div className="absolute inset-0 bg-black opacity-40 z-0" />
-
-      <div className="pt-30 relative z-10 w-full max-w-6xl mx-auto px-4 py-10">
-        <h1 id="events-header" className="text-3xl sm:text-4xl font-bold text-center mb-8 text-white">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 py-10">
+        <h1 id="rewards-header" className="text-3xl sm:text-4xl font-bold text-center mb-8 mt-30 text-white">
           🎁 Rewards Catalogue
         </h1>
+        
+        {/* Search Bar */}
+        <div className="mb-8 bg-white/10 rounded-xl border border-white/20 text-white">
+          <input
+            type="text"
+            placeholder="Search rewards..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1); // Reset to first page on search
+            }}
+            className="w-full mx-auto block p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-600 transition-all duration-200"
+          />
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Rewards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {paginatedItems.map((item) => (
             <div
               key={item.id}
-              className="bg-white shadow-md rounded-2xl overflow-hidden hover:scale-[1.02] transition-transform duration-300"
+              className="bg-white rounded-md overflow-hidden"
             >
-              <div className="w-full h-48 relative">
+              <div className="w-full aspect-square relative overflow-hidden">
                 <Image
-                  src={item.imageUrl}
+                  src={item.link}
                   alt={item.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 hover:scale-110"
                 />
+                {!item.stock && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-white text-lg font-semibold">Out of Stock</span>
+                  </div>
+                )}
               </div>
-              <div className="p-5 space-y-2 text-black">
-                <h2 className="text-xl font-semibold">{item.name}</h2>
+              <div className="p-5 text-black">
+                <h2 className="text-xl font-semibold mb-1">{item.name}</h2>
                 <p className="text-sm text-green-700 font-semibold">
                   {item.price} feathers
                 </p>
@@ -126,6 +111,7 @@ export default function RewardsPage() {
           ))}
         </div>
 
+        {/* Pagination */}
         <div className="pagination flex justify-center items-center gap-6 mt-6 mb-6 relative z-10">
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}

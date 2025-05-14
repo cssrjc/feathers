@@ -93,8 +93,8 @@ export default function EventsPage() {
     <div className="min-h-screen relative bg-gradient-to-r from-green-800 via-black to-green-600">
       <div className="absolute inset-0 bg-black opacity-40 z-0" />
 
-      <div className="pt-30 sm:pt-28 md:pt-28 lg:pt-30 xl:pt-30 relative z-10 w-full max-w-6xl mx-auto px-4 py-10">
-        <h1 id="events-header" className="text-3xl sm:text-4xl font-bold text-center mb-8 text-white">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 py-10">
+        <h1 id="events-header" className="text-3xl sm:text-4xl font-bold text-center mb-8 mt-30 text-white">
           📅 Upcoming Events
         </h1>
 
