@@ -14,8 +14,8 @@ export default function Home() {
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="fixed inset-0 bg-black opacity-75 z-[-1]"></div>
-      <SearchBox />
+      <div className="fixed inset-0 bg-black opacity-55 z-[-1]"></div>
+        <SearchBox />
     </div>
   )
 };
