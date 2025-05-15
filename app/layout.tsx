@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bayon, Edu_NSW_ACT_Foundation } from "next/font/google";
 import { Navbar } from "@/components/navbar";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bayon = Bayon({
+  weight: ["400"],
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sketch = Edu_NSW_ACT_Foundation({
   subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
   title: "feathers",
@@ -25,9 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-[100dvh]`}
-      >
+      <body className="antialised tracking-wide flex flex-col h-[100dvh] bg-green-1">
         <Navbar/>
         {children}
       </body>

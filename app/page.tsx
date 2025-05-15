@@ -1,22 +1,86 @@
-import { SearchBox } from "@/components/search-box";
-import Image from "next/image";
+'use client'
+import { Header } from "@/components/header";
+import { useEffect, useState } from "react"
+import { collection, getDocs, query, where, QuerySnapshot } from 'firebase/firestore'
+import db from '@/utils/firebase'
+import Confetti from 'react-confetti'
+import { AnimatedNumber } from '@/components/motion-primitives/animated-number';
+
+interface User {
+  studentID: string
+  feathers: number
+}
 
 export default function Home() {
+  const [search, setSearch] = useState<string>("")
+  const [feathers, setFeathers] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [value, setValue] = useState<number>(0)
+
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+      setFeathers(null)
+      setError(null)
+
+      const usersRef = collection(db, 'users')
+      const q = query(usersRef, where('studentID', '==', search.trim().toLowerCase()))
+      const querySnapshot: QuerySnapshot = await getDocs(q)
+      
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0]
+        const userData = userDoc.data() as User
+        setFeathers(userData.feathers)
+      } else {
+        setError('No student found with that ID')
+      }
+    } catch (err) {
+      console.error('Error fetching data:', err)
+      setError('An error occurred while searching')
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  useEffect(() => {setValue(feathers ?? 0)}, [feathers])
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
-      <div className="fixed inset-0 bg-cover bg-center z-[-2]">
-        <Image
-          src="/background.jpg"
-          height={400}
-          width={800}
-          alt="background"
-          className="object-cover w-full h-full"
-        />
+    <div className="flex flex-col justify-between items-center w-full h-full">
+      <Header header="Feathers" desc="Check how much feathers you've earned!" />
+      <div>
+        {loading && (
+          <div className="text-ter">Loading...</div>
+        )}
+        {feathers !== null && !loading && (
+          <div className="text-green-2 flex flex-col items-center justify-center font-sketch sm:gap-20 leading-30 text-[200px] sm:text-[300px]">
+            <AnimatedNumber   
+              value={value}
+              springOptions={{
+                bounce: 0,
+                duration: 5000,
+              }}
+            />
+            <p className="text-green-2 font-sans text-ter">feathers earned!</p>
+            <Confetti recycle={false} numberOfPieces={400}/>
+          </div>
+        )}
+        {error && !loading && (
+          <div className="text-red-500">
+            {error}
+          </div>
+        )}
       </div>
-      <div className="fixed inset-0 bg-black opacity-75 z-[-1]"></div>
-      <SearchBox />
+      <form onSubmit={handleSearch} className="mx-auto mb-10">
+        <input
+          placeholder="Enter your Student ID..."
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+          className="w-sm input-field"
+          disabled={loading}
+        />
+      </form>
     </div>
   )
 };
-

@@ -1,61 +1,45 @@
-'use client'
+'use client';
+import { usePathname } from 'next/navigation';
 import { useRive } from '@rive-app/react-canvas';
-import { Gift, Info, Crown} from 'lucide-react';
-import { Button } from './ui/button';
+import { Feather, Gift, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export function Navbar() {
   const { rive, RiveComponent } = useRive({
-    src: '/feathers-logo.riv',
-    artboard: 'Artboard',
+    src: "/feathers-logo.riv",
+    artboard: "Artboard",
   });
 
+  const pathname = usePathname();
+
   const Items = [
-    {
-      name: 'Rewards',
-      link: '/rewards',
-      icon: <Gift size={20}/>
-    },
-    {
-      name: 'Events',
-      link: '/about',
-      icon: <Info size={20}/>
-    },
+    { name: "Home", link: "/", icon: <Feather size={25}/> },
+    { name: "Shop", link: "/shop", icon: <Gift size={25}/> },
+    { name: "Events", link: "/events", icon: <Calendar size={25}/> },
   ];
 
   return (
-    <div className="flex flex-row md:items-center justify-between w-full p-5">
-      <div className="flex flex-row gap-4 items-center">
-        <Link 
-          href="/" 
-          className="font-sans text-4xl md:text-7xl tracking-tight"
-        >
-          Feathers
-        </Link>
-        <RiveComponent className="w-10 h-10 md:w-20 md:h-20"/>
-      </div>
-      <div className="flex flex-row items-center mr-2">
-        {Items.map((item, index) => (
-          <Link 
-            key={index} 
-            href={item.link} 
-          >
-            <Button
-              className="flex flex-row items-center gap-3 text-lg"
-            >
-              {item.icon}
-              <span className='hidden md:block'>{item.name}</span>
-            </Button>
+    <div className="flex flex-row mt-5 bg-green-2/10 border border-green-2/20 mx-auto p-1 rounded-full relative">
+      {Items.map((item, index) => {
+        const isActive = pathname === item.link;
+
+        return (
+          <Link key={index} href={item.link} className="relative z-10">
+            <div className="relative flex flex-row items-center justify-center px-5 py-2 gap-2 font-sans text-green-2 text-ter sm:text-sec rounded-full">
+              {isActive && (
+                <motion.div
+                  layoutId="tab-pill"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="absolute inset-0 rounded-full bg-green-1 border border-green-2/20 z-[-1]"
+                />
+              )}
+              <div>{item.icon}</div>
+              <span className='mr-1'>{item.name}</span>
+            </div>
           </Link>
-        ))}
-
-
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScvU2_3s3QGY_9ZC6ajCIMXGoAgEj1ZUu80n5oWtxZtAQ6Bbw/viewform">
-          <Button variant="outline" className='ml-4 md:ml-0 py-2'>
-            Redeem
-          </Button>
-        </a>
-      </div>
+        );
+      })}
     </div>
   );
-};
+}

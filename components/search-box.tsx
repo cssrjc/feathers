@@ -1,7 +1,5 @@
 'use client'
 import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
-import { Send } from "lucide-react"
 import { collection, getDocs, query, where, QuerySnapshot } from 'firebase/firestore'
 import db from '@/utils/firebase'
 import Confetti from 'react-confetti'
@@ -48,7 +46,7 @@ export function SearchBox() {
   useEffect(() => {setValue(feathers ?? 0)}, [feathers])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 w-full max-w-3xl mx-auto">
+    <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
       <div>
         {loading && (
           <div className="text-lg">Loading...</div>
@@ -72,17 +70,15 @@ export function SearchBox() {
           </div>
         )}
       </div>
-      <div className="w-full">
-        <form onSubmit={handleSearch} className="w-full px-10">
-          <input
-            placeholder="Enter your Student ID..."
-            value={search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-            className="border-2 border-border rounded-full p-2 pl-5 w-full focus:border-white focus:outline-none transition-colors duration-300"
-            disabled={loading}
-          />
-        </form>
-      </div>
+      <form onSubmit={handleSearch} className="w-full mx-auto">
+        <input
+          placeholder="Enter your Student ID..."
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+          className="w-sm input-field"
+          disabled={loading}
+        />
+      </form>
     </div>
   )
 }
