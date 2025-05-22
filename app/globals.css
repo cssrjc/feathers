@@ -17,6 +17,31 @@
   @apply border border-green-2/20 bg-green-2/10 text-green-2 rounded-2xl p-2 pl-5 focus:border-green-2/90 focus:outline-none transition-colors duration-300;
 }
 
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-green-3);
+  border-radius: 12px;
+
+  background-image: linear-gradient(
+    90deg,
+    var(--color-green-3) 0%,
+  rgba(0, 0, 0, 0.07) 50%,
+    var(--color-green-3) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 :root {
 }
 

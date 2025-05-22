@@ -7,34 +7,35 @@ import db from '@/utils/firebase'
 import Image from 'next/image';
 import { AnimatedCard } from "@/components/animations";
 
-interface RewardItem {
+interface EventItem {
   id: string;
   link: string;
   name: string;
-  price: number;
-  stock: boolean;
+  description: string;
+  redeem: boolean;
+  earn: boolean;
 }
 
 export default function Home() {
-  const [rewards, setRewards] = useState<RewardItem[]>([]);
+  const [events, setEvents] = useState<EventItem[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const itemsPerPage: number = 15;
 
-  const fetchRewards = async () => {
+  const fetchEvents = async () => {
     try {
       // throw new Error("Simulated error"); //hehe for testing only
-      const rewardsRef = collection(db, 'rewards');
-      const snapshot = await getDocs(rewardsRef);
-      const rewardsData = snapshot.docs.map(doc => ({
+      const eventsRef = collection(db, 'rewards');
+      const snapshot = await getDocs(eventsRef);
+      const eventsData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-      })) as RewardItem[];
-      setRewards(rewardsData);
+      })) as EventItem[];
+      setEvents(eventsData);
     } catch (error) {
-      console.error('Error fetching rewards:', error);
+      console.error('Error fetching events:', error);
       setError(true);
     } finally {
       setLoading(false);
@@ -43,15 +44,15 @@ export default function Home() {
 
   useEffect(() => {
     // setLoading(true); //also for testing only
-    fetchRewards();
+    fetchEvents();
   }, []);
 
-  const filteredRewards = rewards.filter(item =>
+  const filteredEvents = events.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const totalPages = Math.ceil(filteredRewards.length / itemsPerPage);
-  const paginatedItems = filteredRewards.slice(
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const paginatedItems = filteredEvents.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -59,7 +60,7 @@ export default function Home() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     setTimeout(() => {
-      const contentTop = document.getElementById('rewards-top');
+      const contentTop = document.getElementById('events-top');
       if (contentTop) {
         contentTop.scrollIntoView({ behavior: 'smooth' });
       }
@@ -67,11 +68,11 @@ export default function Home() {
   };
 
   return (
-    <div id="rewards-top" className="flex flex-col justify-between items-center w-full h-full">
-      <Header header="Shop" desc="Shop our latest collection of rewards!" />
+    <div id="events-top" className="flex flex-col justify-between items-center w-full h-full">
+      <Header header="Events" desc="Check out upcoming events to earn feathers & redeem rewards!" />
       <div className="w-full max-w-6xl px-4 flex flex-col grow">
         <input
-          placeholder="search rewards..."
+          placeholder="search events..."
           value={searchQuery}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setSearchQuery(e.target.value);
@@ -82,13 +83,13 @@ export default function Home() {
 
         {!loading && error && (
           <div className="text-center text-red-1 flex-grow">
-            <p className="text-ter">Error in displaying rewards. Try again</p>
+            <p className="text-ter">Error in displaying events. Try again</p>
           </div>
         )}
 
-        {!loading && !error && filteredRewards.length === 0 && (
+        {!loading && !error && filteredEvents.length === 0 && (
           <div className="text-center text-red-1 flex-grow">
-            <p className="text-ter">No rewards found</p>
+            <p className="text-ter">No events found</p>
           </div>
         )}
 
@@ -109,7 +110,7 @@ export default function Home() {
             {paginatedItems.map((item) => (
               <AnimatedCard 
                 key={item.id}
-                animationKey={`${item.id}-${searchQuery}`}
+                animationKey={`${item.id}-${searchQuery}-${currentPage}`}
                 shouldSnapIn={!!searchQuery}
               >
                 <div className="w-full aspect-square relative overflow-hidden">
@@ -119,7 +120,7 @@ export default function Home() {
                     fill
                     className="object-cover rounded-xl transition-transform duration-300 hover:scale-110"
                   />
-                  {!item.stock && (
+                  {!item.redeem && (
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-xl">
                       <span className="text-white text-ter">Out of Stock</span>
                     </div>
@@ -128,7 +129,7 @@ export default function Home() {
                 <div className="flex flex-row justify-between text-green-2 text-ter mt-3">
                   <h2>{item.name}</h2>
                   <div className="flex flex-row gap-2 place-items-baseline">
-                    <p>{item.price}</p>
+                    <p>{item.earn}</p>
                     <Feather size={20} />
                   </div>
                 </div>
@@ -137,7 +138,7 @@ export default function Home() {
           </div>
         )}
 
-        {!loading && !error && filteredRewards.length > 0 && (
+        {!loading && !error && filteredEvents.length > 0 && (
           <div className="pagination flex justify-center items-center text-ter gap-6 mt-14 mb-6 relative z-10 text-green-2">
             <button
               onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
