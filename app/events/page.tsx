@@ -98,7 +98,7 @@ export default function Home() {
         )}
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full">
             {Array.from({ length: 9 }).map((_, i) => (
               <div key={i}>
                 <div className="shimmer w-full aspect-square" />
@@ -106,7 +106,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
             {paginatedItems.map((item) => (
               <AnimatedCard 
                 key={item.id}

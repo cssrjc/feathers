@@ -11,6 +11,8 @@
   --text-ter: var(--text-xl);
   --font-sans: 'Bayon', sans-serif;
   --font-sketch: 'Edu NSW ACT Foundation';
+  --breakpoint-xs: 500px;
+  --breakpoint-sm: 1100px;
 }
 
 @utility input-field {
