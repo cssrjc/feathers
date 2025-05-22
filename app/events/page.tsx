@@ -6,18 +6,11 @@ import { Feather } from "lucide-react";
 import db from '@/utils/firebase'
 import Image from 'next/image';
 import { AnimatedCard } from "@/components/animations";
-
-interface EventItem {
-  id: string;
-  link: string;
-  name: string;
-  description: string;
-  redeem: boolean;
-  earn: boolean;
-}
+import { useEventsStore } from "@/lib/store";
+import { EventItem } from "@/lib/types";
 
 export default function Home() {
-  const [events, setEvents] = useState<EventItem[]>([]);
+  const { events, setEvents } = useEventsStore();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,6 +20,7 @@ export default function Home() {
   const fetchEvents = async () => {
     try {
       // throw new Error("Simulated error"); //hehe for testing only
+      if (events.length > 0) return;
       const eventsRef = collection(db, 'rewards');
       const snapshot = await getDocs(eventsRef);
       const eventsData = snapshot.docs.map(doc => ({

@@ -6,17 +6,11 @@ import { Feather } from "lucide-react";
 import db from '@/utils/firebase'
 import Image from 'next/image';
 import { AnimatedCard } from "@/components/animations";
-
-interface RewardItem {
-  id: string;
-  link: string;
-  name: string;
-  price: number;
-  stock: boolean;
-}
+import { useRewardsStore } from "@/lib/store";
+import { RewardItem } from "@/lib/types";
 
 export default function Home() {
-  const [rewards, setRewards] = useState<RewardItem[]>([]);
+  const { rewards, setRewards } = useRewardsStore();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
@@ -26,6 +20,7 @@ export default function Home() {
   const fetchRewards = async () => {
     try {
       // throw new Error("Simulated error"); //hehe for testing only
+      if (rewards.length > 0) return;
       const rewardsRef = collection(db, 'rewards');
       const snapshot = await getDocs(rewardsRef);
       const rewardsData = snapshot.docs.map(doc => ({

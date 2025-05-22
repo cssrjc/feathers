@@ -5,11 +5,7 @@ import { collection, getDocs, query, where, QuerySnapshot } from 'firebase/fires
 import db from '@/utils/firebase'
 import Confetti from 'react-confetti'
 import { AnimatedNumber } from '@/components/motion-primitives/animated-number';
-
-interface User {
-  studentID: string
-  feathers: number
-}
+import { UserItem } from "@/lib/types";
 
 export default function Home() {
   const [search, setSearch] = useState<string>("")
@@ -31,7 +27,7 @@ export default function Home() {
       
       if (!querySnapshot.empty) {
         const userDoc = querySnapshot.docs[0]
-        const userData = userDoc.data() as User
+        const userData = userDoc.data() as UserItem
         setFeathers(userData.feathers)
       } else {
         setError('No student found with that ID')
@@ -67,7 +63,7 @@ export default function Home() {
           </div>
         )}
         {error && !loading && (
-          <div className="text-red-500">
+          <div className="text-red-1">
             {error}
           </div>
         )}
