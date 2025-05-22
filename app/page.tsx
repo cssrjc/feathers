@@ -5,14 +5,21 @@ import { collection, getDocs, query, where, QuerySnapshot } from 'firebase/fires
 import db from '@/utils/firebase'
 import Confetti from 'react-confetti'
 import { AnimatedNumber } from '@/components/motion-primitives/animated-number';
+import { useUserFeatherStore } from '@/lib/store';
 import { UserItem } from "@/lib/types";
 
 export default function Home() {
-  const [search, setSearch] = useState<string>("")
-  const [feathers, setFeathers] = useState<number | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [value, setValue] = useState<number>(0)
+  const {
+    search,
+    feathers,
+    value,
+    setSearch,
+    setFeathers,
+    setValue,
+  } = useUserFeatherStore();
+
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()

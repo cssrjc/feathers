@@ -107,15 +107,15 @@ export default function Home() {
                 animationKey={`${item.id}-${searchQuery}`}
                 shouldSnapIn={!!searchQuery}
               >
-                <div className="w-full aspect-square relative overflow-hidden">
+                <div className="w-full aspect-square relative rounded-xl overflow-hidden">
                   <Image
                     src={item.link}
                     alt={item.name}
                     fill
-                    className="object-cover rounded-xl transition-transform duration-300 hover:scale-110"
+                    className="object-cover transition-transform duration-300 hover:scale-110"
                   />
                   {!item.stock && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-xl">
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                       <span className="text-white text-ter">Out of Stock</span>
                     </div>
                   )}

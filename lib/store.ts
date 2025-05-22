@@ -1,6 +1,30 @@
 import { create } from 'zustand';
 import { RewardItem, EventItem } from './types';
 
+interface UserFeatherState {
+  search: string;
+  feathers: number | null;
+  value: number;
+  setSearch: (search: string) => void;
+  clearSearch: () => void;
+  setFeathers: (feathers: number | null) => void;
+  clearFeathers: () => void;
+  setValue: (value: number) => void;
+  clearValue: () => void;
+}
+
+export const useUserFeatherStore = create<UserFeatherState>((set) => ({
+  search: '',
+  feathers: null,
+  value: 0,
+  setSearch: (search) => set({ search }),
+  clearSearch: () => set({ search: '' }),
+  setFeathers: (feathers) => set({ feathers }),
+  clearFeathers: () => set({ feathers: null }),
+  setValue: (value) => set({ value }),
+  clearValue: () => set({ value: 0 }),
+}));
+
 interface RewardsState {
   rewards: RewardItem[];
   setRewards: (rewards: RewardItem[]) => void;
