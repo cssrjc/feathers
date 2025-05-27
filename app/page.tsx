@@ -66,8 +66,8 @@ export default function Home() {
               }}
             />
             <p className="text-green-2 font-sans text-ter">feathers earned!</p>
-            <Confetti recycle={false} numberOfPieces={400}/>
-          </div>
+            <Confetti recycle={false} numberOfPieces={200} gravity={0.3}/>
+          </div> 
         )}
         {error && !loading && (
           <div className="text-red-1">
