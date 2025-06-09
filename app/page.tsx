@@ -55,61 +55,81 @@ export default function Home() {
   useEffect(() => {setValue(feathers ?? 0)}, [feathers])
 
   return (
-    <div className="flex flex-col justify-between items-center w-full h-full">
-      <motion.div
-      animate={{ opacity: isFocused ? 0 : 1 }}
-      transition={{ duration: 1, ease: "easeInOut" }}
-      className="fixed inset-0 -z-10 overflow-hidden blur-[250px]"
-      aria-hidden="true"
-    >
-      <Background />
-    </motion.div>
-      <Header header="Feathers" desc="Check how many feathers you've earned!" />
-      <div>
-        {loading && (
-          <div className="text-ter">Loading...</div>
-        )}
-        {feathers !== null && !loading && (
-          <div className="text-green-2 flex flex-col items-center justify-center font-sketch sm:gap-20 leading-30 text-[200px] sm:text-[300px]">
-            <AnimatedNumber   
-              value={value}
-              springOptions={{
-                bounce: 0,
-                duration: 5000,
-              }}
-            />
-            <p className="text-green-2 font-sans text-ter">feathers earned!</p>
-            <Confetti recycle={false} numberOfPieces={200} gravity={0.3}/>
-          </div> 
-        )}
-        {error && !loading && (
-          <div className="text-red-1">
-            {error}
-          </div>
-        )}
-        {feathers === null && !loading && (
-          <div className="flex-grow h-full flex flex-col items-center justify-center text-ter">
-            {/* <Image
-              src="/feathers.png"
-              alt="Feathers"
-              width={300}
-              height={300}
-              className="h-[90%] object-contain"
-            /> */}
-          </div>
-        )}
-      </div>
-      <form onSubmit={handleSearch} className="mx-auto mb-10">
-        <input
-          placeholder="Enter your Student ID..."
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          value={search}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-          className="w-sm input-field"
-          disabled={loading}
-        />
-      </form>
+    <div className="flex flex-row justify-between h-full items-center">
+    <div className="hidden sm:block h-full relative w-[900px]">
+      <Image
+        src="/left.svg"
+        alt="Feathers"
+        fill
+        style={{ objectFit: "fill" }}
+        priority
+      />
     </div>
+      <div className="flex flex-col justify-between items-center w-full h-full">
+        <motion.div
+          animate={{ opacity: isFocused ? 0 : 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          className="fixed inset-0 -z-10 overflow-hidden blur-[250px]"
+          aria-hidden="true"
+        >
+          <Background />
+        </motion.div>
+        <Header header="Feathers" desc="Check how many feathers you've earned!" />
+        <div>
+          {loading && (
+            <div className="text-ter">Loading...</div>
+          )}
+          {feathers !== null && !loading && (
+            <div className="text-green-2 flex flex-col items-center justify-center font-sketch sm:gap-20 leading-30 text-[200px] sm:text-[300px]">
+              <AnimatedNumber   
+                value={value}
+                springOptions={{
+                  bounce: 0,
+                  duration: 5000,
+                }}
+              />
+              <p className="text-green-2 font-sans text-ter">feathers earned!</p>
+              <Confetti recycle={false} numberOfPieces={200} gravity={0.3}/>
+            </div> 
+          )}
+          {error && !loading && (
+            <div className="text-red-1">
+              {error}
+            </div>
+          )}
+          {feathers === null && !loading && (
+            <div className="flex-grow h-full flex flex-col items-center justify-center text-ter">
+              <Image
+                src="/centre.svg"
+                alt="Feathers"
+                width={300}
+                height={300}
+                className="h-[800px]"
+              />
+            </div>
+          )}
+        </div>
+        <form onSubmit={handleSearch} className="mx-auto mb-10">
+          <input
+            placeholder="Enter your Student ID..."
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            value={search}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+            className="w-sm input-field"
+            disabled={loading}
+          />
+        </form>
+      </div>
+      <div className="hidden sm:block h-full relative w-[900px]">
+        <Image
+          src="/right.svg"
+          alt="Feathers"
+          fill
+          style={{ objectFit: "fill" }}
+          priority
+        />
+      </div>
+  </div>
   )
 };
