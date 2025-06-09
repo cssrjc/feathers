@@ -7,6 +7,9 @@ import Confetti from 'react-confetti'
 import { AnimatedNumber } from '@/components/motion-primitives/animated-number';
 import { useUserFeatherStore } from '@/lib/store';
 import { UserItem } from "@/lib/types";
+import Image from "next/image";
+import { motion } from 'framer-motion';
+import { Background } from '@/components/background'
 
 export default function Home() {
   const {
@@ -20,6 +23,8 @@ export default function Home() {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -51,7 +56,15 @@ export default function Home() {
 
   return (
     <div className="flex flex-col justify-between items-center w-full h-full">
-      <Header header="Feathers" desc="Check how much feathers you've earned!" />
+      <motion.div
+      animate={{ opacity: isFocused ? 0 : 1 }}
+      transition={{ duration: 1, ease: "easeInOut" }}
+      className="fixed inset-0 -z-10 overflow-hidden blur-[250px]"
+      aria-hidden="true"
+    >
+      <Background />
+    </motion.div>
+      <Header header="Feathers" desc="Check how many feathers you've earned!" />
       <div>
         {loading && (
           <div className="text-ter">Loading...</div>
@@ -74,10 +87,23 @@ export default function Home() {
             {error}
           </div>
         )}
+        {feathers === null && !loading && (
+          <div className="flex-grow h-full flex flex-col items-center justify-center text-ter">
+            {/* <Image
+              src="/feathers.png"
+              alt="Feathers"
+              width={300}
+              height={300}
+              className="h-[90%] object-contain"
+            /> */}
+          </div>
+        )}
       </div>
       <form onSubmit={handleSearch} className="mx-auto mb-10">
         <input
           placeholder="Enter your Student ID..."
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           value={search}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           className="w-sm input-field"

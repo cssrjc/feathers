@@ -119,8 +119,8 @@ export default function Home() {
                     <p className="text-ter text-green-2/50">{item.description}</p>
                   </div>
                   <div className="flex flex-row gap-2">
-                    {item.redeem && <p className="px-4 py-2 border rounded-full border-green-2">redeem</p>}
-                    {item.earn && <p className="px-4 py-2 border rounded-full border-green-2">earn</p>}
+                    {item.redeem && <p className="px-4 py-2 border rounded-full text-test-blue border-test-blue">redeem</p>}
+                    {item.earn && <p className="px-4 py-2 border rounded-full text-test-blue border-test-blue">earn</p>}
                   </div>
                 </div>
               </AnimatedCard>

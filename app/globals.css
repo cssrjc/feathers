@@ -13,6 +13,11 @@
   --font-sketch: 'Edu NSW ACT Foundation';
   --breakpoint-xs: 500px;
   --breakpoint-sm: 1100px;
+  --color-test-blue: #0d3c7f;
+  --color-test-green:#2c735c;
+  --color-test-lightGreyBlue: #dce6f6;
+  --color-test-lightBlue: #9fc0f5;
+  --color-test-blueOutline: #418bf8;
 }
 
 @utility input-field {
