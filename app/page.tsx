@@ -97,7 +97,7 @@ export default function Home() {
               {error}
             </div>
           )}
-          {feathers === null && !loading && (
+          {/* {feathers === null && !loading && (
             <div className="flex-grow h-full flex flex-col items-center justify-center text-ter">
               <Image
                 src="/centre.svg"
@@ -107,7 +107,7 @@ export default function Home() {
                 className="h-[800px]"
               />
             </div>
-          )}
+          )} */}
         </div>
         <form onSubmit={handleSearch} className="mx-auto mb-10">
           <input
